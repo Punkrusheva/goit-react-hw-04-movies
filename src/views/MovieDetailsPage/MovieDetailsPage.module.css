@@ -1,6 +1,6 @@
 .details {
   display: inline-block;
-  width: 300px;
+  width: 70%;
 }
 
 .detailsMenu {
@@ -21,8 +21,8 @@
 
 .img {
   display: inline-block;
-  width: 210px;
-  height: 250px;
+  width: 25%;
+  height: auto;
   margin-right: 15px;
 }
 

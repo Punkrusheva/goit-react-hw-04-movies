@@ -2,51 +2,57 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import styles from './MovieDetailsPage.module.css';
 import { Link, NavLink } from "react-router-dom";
-import { showDetails } from "../../services/movies-api";
 
 export default class MovieDetailsPage extends Component {
     state = {
-        movies: [],
+        movieId: '',
+        img: '',
+        data: '',
+        original_title: '',
+        vote_average: '',
+        overview: 0,
+        genres: '',
     };
 
-    async componentDidMount() {//`https://developers.themoviedb.org/3/movies/get-movie-details/${movie.id}`
-        const response = await Axios.get('https://api.themoviedb.org/3/trending/movie/day?api_key=892c9b9f1c704261a0f515abd746d990');
-        this.setState({ movies: response.data.results });
-        console.log(this.state.movies);
-    };
-
-    onClick(e) {
-
-    console.log('Click', e.target.innerHTML);
+    async componentDidMount() {
+        const movieId = this.props.match.params.movieId;
+        const response = await Axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=892c9b9f1c704261a0f515abd746d990`);
+        console.log(response);
+        this.setState({img: `https://image.tmdb.org/t/p/w500/${response.data.poster_path}?api_key=892c9b9f1c704261a0f515abd746d990` });
+        this.setState({ data: response.data.release_date.slice(0, 4) });
+        this.setState({ original_title: response.data.original_title });
+        this.setState({ vote_average: response.data.vote_average * 10 });
+        this.setState({ overview: response.data.overview });
+        this.setState({ genres: response.data.genres.map((genre) => (genre.name )) });
+        this.setState({ movieId: movieId });
+        console.log(response.data.genres[0].name);
     };
 
     render() {
-       // const {movies} = this.state;
+        const { data, original_title, vote_average, overview, genres, img, movieId } = this.state;
 
-       //console.log('match', match.params.movieId);
         return (
             <>
                 <Link to={`/`}>Go back</Link>
                 <br/>
-                <img className={styles.img} src="" alt=""/>
+                <img className={styles.img} src={img} alt=""/>
                 <div className={styles.details}>
-                    
-                    <h1 className={styles.title}>Name</h1><p>Name</p>
-                    <div className={styles.score}>User Score  User Score</div>
-                    <div className={styles.overview}>Overview</div><p>Overview</p>
-                    <div className={styles.ganres}>Ganres</div><p>Ganres</p>
+                    <h1 className={styles.title}>Name</h1><p>{original_title} ({data})</p>
+                    <div className={styles.score}>User Score: {vote_average}%</div>
+                    <div className={styles.overview}>Overview:</div><p>{overview}</p>
+                    <div className={styles.genres}>Genres</div><p>{genres}</p>
                 </div>
                 
                 <hr />
                 <h2>Additional information</h2>
                 <ul className={styles.detailsMenu}>
                     <li className={styles.detailsMenuItem}>
-                        <NavLink exact to={`/movies/{movie.id}/cast`}
+                        <NavLink exact to={`/movies/${movieId}/cast`}
                             className={styles.detailsLink}
                             activeClassName={styles.navLinkActive}>Cast</NavLink>
                     </li>
                     <li className={styles.detailsMenuItem}>
-                        <NavLink to={`/movies/{movie.id}/reviews`}
+                        <NavLink to={`/movies/${movieId}/reviews`}
                             className={styles.detailsLink}
                             activeClassName={styles.navLinkActive}>Reviews</NavLink>
                     </li>
@@ -55,9 +61,4 @@ export default class MovieDetailsPage extends Component {
         )
     };
 }
-/* <ul className={styles.moviesList}>
-                    {movies.map((movie) => (<li key={movie.id} className={styles.item} onClick={this.onClick}>
-                        <Link to={`/movies/${movie.id}`}>
-                        {movie.title}</Link></li>))}
-                
-            </ul>*/
+/*<p>{genrees.map((genre) => {genre.name})}</p>*/

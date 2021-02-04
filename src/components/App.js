@@ -1,5 +1,5 @@
-import { Switch, Route, Redirect, NavLink } from "react-router-dom";
-import Navigation from './Novigation/Novigation';
+import { Switch, Route, Redirect } from "react-router-dom";
+import Navigation from './Navigation/Navigation';
 import HomePage from "../views/HomePage/HomePage";
 import MoviesPage from "../views/MoviesPage/MoviesPage";
 import MovieDetailsPage from "../views/MovieDetailsPage/MovieDetailsPage";
@@ -11,17 +11,17 @@ const App = () =>
 <div>  
   <header>
     <Navigation />
-    </header>
-    <hr/>
-    <Switch>
+  </header>
+  <hr/>
+  <Switch>
       <Route path="/" exact component={HomePage} />
       <Route path="/movies" exact component={MoviesPage} />
       <Route path="/movies/:movieId"  component={MovieDetailsPage} />
-      <Route path="/movies/{movie.id}/cast" component={MovieDetailsPage} />
-      <Route path="/movies/{movie.id}/reviews" component={MovieDetailsPage} />
+      <Route path="/movies/:movieId/cast" component={MovieDetailsPage} />
+      <Route path="/movies/:movieId/reviews" component={MovieDetailsPage} />
       <Redirect to="/" />
-    </Switch>
-   </div>
+  </Switch>
+</div>
    
     
  export default App;
