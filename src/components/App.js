@@ -1,7 +1,8 @@
 import { Switch, Route, Redirect, NavLink } from "react-router-dom";
+import Navigation from './Novigation/Novigation';
 import HomePage from "../views/HomePage/HomePage";
 import MoviesPage from "../views/MoviesPage/MoviesPage";
-import MovieDetailsPage from "./MovieDetailsPage/MovieDetailsPage";
+import MovieDetailsPage from "../views/MovieDetailsPage/MovieDetailsPage";
 import '../stylesheets/normalize.css';
 import '../stylesheets/main.css';
 
@@ -9,26 +10,15 @@ import '../stylesheets/main.css';
 const App = () =>   
 <div>  
   <header>
-    <ul className="headerMenu">
-      <li className="headerMenuItem">
-        <NavLink exact to="/"
-          className="navLink"
-          activeClassName="navLink-active">Home</NavLink>
-      </li>
-      <li className="headerMenuItem">
-        <NavLink to="/movies"
-          className="navLink"
-          activeClassName="navLink-active">Movies</NavLink>
-      </li>
-    </ul>
+    <Navigation />
     </header>
     <hr/>
     <Switch>
       <Route path="/" exact component={HomePage} />
-      <Route path="/movies" component={MoviesPage} />
-      <Route path="/movies/{movieId}" component={MovieDetailsPage} />
-      <Route path="/movies/{movieId}/cast" component={MovieDetailsPage} />
-      <Route path="/movies/{movieId}/reviews" component={MovieDetailsPage} />
+      <Route path="/movies" exact component={MoviesPage} />
+      <Route path="/movies/:movieId"  component={MovieDetailsPage} />
+      <Route path="/movies/{movie.id}/cast" component={MovieDetailsPage} />
+      <Route path="/movies/{movie.id}/reviews" component={MovieDetailsPage} />
       <Redirect to="/" />
     </Switch>
    </div>

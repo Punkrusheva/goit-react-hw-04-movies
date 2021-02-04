@@ -9,18 +9,19 @@ export default class HomePage extends Component {
     };
 
     async componentDidMount() {
+        //showDetails();
         const response = await Axios.get('https://api.themoviedb.org/3/trending/movie/day?api_key=892c9b9f1c704261a0f515abd746d990');
         this.setState({ movies: response.data.results });
-        console.log(this.state.movies);
+       // console.log(this.state.movies);
     };
 
     onClick(e) {
-    console.log('Click', e.target.innerHTML);
+        console.log('Click', e.target.innerHTML);
     };
 
     render() {
         const {movies} = this.state;
-
+        
         return (
             <>
                 <h1 className={styles.title}>Trending today</h1>
