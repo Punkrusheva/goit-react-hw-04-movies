@@ -1,6 +1,6 @@
 .details {
   display: inline-block;
-  position: fixed;
+  position: absolute;
   top: 100;
   mix-width: 400px;
 }
