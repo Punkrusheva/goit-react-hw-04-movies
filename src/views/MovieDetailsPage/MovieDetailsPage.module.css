@@ -1,6 +1,8 @@
 .details {
   display: inline-block;
-  width: 70%;
+  position: fixed;
+  top: 100;
+  mix-width: 400px;
 }
 
 .detailsMenu {
@@ -21,7 +23,7 @@
 
 .img {
   display: inline-block;
-  width: 25%;
+  width: 210px;
   height: auto;
   margin-right: 15px;
 }
@@ -38,4 +40,17 @@ h2 {
 .score {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.overview {
+  font-weight: 800;
+}
+
+.genres {
+  font-weight: 700;
+}
+
+.linkBack {
+  display: flex;
+  font-size: 10px;
 }

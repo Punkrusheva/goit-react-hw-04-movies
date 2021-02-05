@@ -3,8 +3,11 @@ import Navigation from './Navigation/Navigation';
 import HomePage from "../views/HomePage/HomePage";
 import MoviesPage from "../views/MoviesPage/MoviesPage";
 import MovieDetailsPage from "../views/MovieDetailsPage/MovieDetailsPage";
+import Cast from "../views/Cast/Cast";
+import Reviews from "../views/Reviews/Reviews";
 import '../stylesheets/normalize.css';
 import '../stylesheets/main.css';
+import routes from "../routes";
 
 
 const App = () =>   
@@ -14,12 +17,12 @@ const App = () =>
   </header>
   <hr/>
   <Switch>
-      <Route path="/" exact component={HomePage} />
-      <Route path="/movies" exact component={MoviesPage} />
-      <Route path="/movies/:movieId"  component={MovieDetailsPage} />
-      <Route path="/movies/:movieId/cast" component={MovieDetailsPage} />
-      <Route path="/movies/:movieId/reviews" component={MovieDetailsPage} />
-      <Redirect to="/" />
+      <Route path={routes.home} exact component={HomePage} />
+      <Route path={routes.moviesPage} exact component={MoviesPage} />
+      <Route path={routes.movieDetailsPage}  component={MovieDetailsPage} />
+      <Route path={routes.cast} component={Cast} />
+      <Route path={routes.reviews} component={Reviews} />
+      <Redirect to={routes.home} />
   </Switch>
 </div>
    
