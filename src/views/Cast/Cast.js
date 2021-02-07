@@ -15,7 +15,8 @@ export default class Cast extends Component {
     };
 
     render() {
-       const {credits} = this.state;
+        const { credits } = this.state;
+
         return (
             <>
                 <hr/>
@@ -23,6 +24,7 @@ export default class Cast extends Component {
                     <ul className={styles.cast}>
                         {credits.map(credit => (
                             <li className={styles.item} key={credit.id}>
+                                
                                 <img className={styles.img} src={`https://image.tmdb.org/t/p/w500/${credit.profile_path}?api_key=892c9b9f1c704261a0f515abd746d990`} alt={credit.name} />
                                 <div className={styles.name}>{credit.name}</div>
                                 <div className={styles.character}>Character: {credit.character}</div>

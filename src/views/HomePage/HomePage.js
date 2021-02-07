@@ -10,6 +10,7 @@ export default class HomePage extends Component {
 
     async componentDidMount() {
         const response = await Axios.get('https://api.themoviedb.org/3/trending/movie/day?api_key=892c9b9f1c704261a0f515abd746d990');
+        //console.log(response);
         this.setState({ movies: response.data.results });
     };
 

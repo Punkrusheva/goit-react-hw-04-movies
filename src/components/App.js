@@ -1,5 +1,5 @@
 import { Switch, Route, Redirect } from "react-router-dom";
-import Navigation from './Navigation/Navigation';
+import Layout from "./Layout/Layout";
 import HomePage from "../views/HomePage/HomePage";
 import MoviesPage from "../views/MoviesPage/MoviesPage";
 import MovieDetailsPage from "../views/MovieDetailsPage/MovieDetailsPage";
@@ -9,15 +9,13 @@ import routes from "../routes";
 
 
 const App = () =>   
-<div>  
-  <Navigation />
-  <hr/>
+<Layout>  
   <Switch>
       <Route path={routes.home} exact component={HomePage} />
       <Route path={routes.moviesPage} exact component={MoviesPage} />
       <Route path={routes.movieDetailsPage}  component={MovieDetailsPage} />
       <Redirect to={routes.home} />
   </Switch>
-</div>
+</Layout>
 
 export default App;

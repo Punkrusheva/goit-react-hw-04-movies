@@ -2,7 +2,7 @@
   display: inline-block;
   position: absolute;
   top: 100;
-  mix-width: 400px;
+  min-width: 400px;
 }
 
 .detailsMenu {
@@ -14,8 +14,8 @@
   font-weight: 600;
 }
 
-.detailsLink-active,
-.detailsMenuItem:hover {
+.detailsLinkActive,
+.detailsLink:hover {
   color: brown;
   text-decoration: underline;
   font-weight: 600;
@@ -52,5 +52,9 @@ h2 {
 
 .linkBack {
   display: flex;
+  height: 25px;
+  padding-top: 10px;
   font-size: 10px;
+  background: #fff;
+  border: 0;
 }
