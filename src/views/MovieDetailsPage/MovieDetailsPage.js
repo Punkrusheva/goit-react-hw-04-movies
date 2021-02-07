@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import { Route, NavLink } from "react-router-dom";
-import Axios from 'axios';
 import { IoIosArrowRoundBack } from 'react-icons/io';
+import Axios from 'axios';
 import routes from "../../routes";
-import Cast from "../Cast/Cast";
-import Reviews from "../Reviews/Reviews";
 import styles from './MovieDetailsPage.module.css';
+
+const Cast = lazy(() => import('../Cast/Cast.js' /*webpackChunkName: 'cast' */));
+const Reviews = lazy(() => import('../Reviews/Reviews.js' /*webpackChunkName: 'reviews' */));
 
 export default class MovieDetailsPage extends Component {
     state = {
@@ -71,8 +72,10 @@ export default class MovieDetailsPage extends Component {
                             activeClassName={styles.detailsLinkActive}>Reviews</NavLink>
                     </li>
                     </ul>
-                    <Route path={routes.cast} component={Cast} />
-                    <Route path={routes.reviews} component={Reviews} />
+                    <Suspense fallback={<h1>Загружаем...</h1>}>
+                        <Route path={routes.cast} component={Cast} />
+                        <Route path={routes.reviews} component={Reviews} />
+                    </Suspense>
                 </>
                 )}           
             </>

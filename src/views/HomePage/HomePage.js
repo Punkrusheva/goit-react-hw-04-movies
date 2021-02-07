@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import Axios from 'axios';
 import styles from './HomePage.module.css';
 import { Link } from "react-router-dom";
