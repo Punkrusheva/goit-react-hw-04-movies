@@ -62,12 +62,12 @@ export default class MovieDetailsPage extends Component {
                 <h2>Additional information</h2>
                 <ul className={styles.detailsMenu}>
                     <li className={styles.detailsMenuItem}>
-                        <NavLink exact to={`${this.props.match.url}/cast`}
+                            <NavLink exact to={{ pathname: `${this.props.match.url}/cast`, state: { from: this.props.location }}}
                             className={styles.detailsLink}
                             activeClassName={styles.detailsLinkActive}>Cast</NavLink>
                     </li>
                     <li className={styles.detailsMenuItem}>
-                        <NavLink to={`${this.props.match.url}/reviews`}
+                            <NavLink to={{ pathname: `${this.props.match.url}/reviews`, state: { from: this.props.location }}}
                             className={styles.detailsLink}
                             activeClassName={styles.detailsLinkActive}>Reviews</NavLink>
                     </li>
