@@ -1,17 +1,26 @@
-import React, { Component, Suspense, lazy } from 'react';
-import Axios from 'axios';
+import React, { Component} from 'react';
 import styles from './HomePage.module.css';
-import { Link } from "react-router-dom";
+import API from "../../services/movies-api";
+import MovieList from "../../components/MovieList/MovieList";
+import Load from "../../components/Loader/Loader";
 
 export default class HomePage extends Component {
     state = {
         movies: [],
+        error: null,
+        loading: false,
     };
 
     async componentDidMount() {
-        const response = await Axios.get('https://api.themoviedb.org/3/trending/movie/day?api_key=892c9b9f1c704261a0f515abd746d990');
-        //console.log(response);
-        this.setState({ movies: response.data.results });
+        try {
+            this.setState({ loading: true });
+            const response = await API.showTrending();
+            this.setState({ movies: response.data.results })
+        }
+        catch (error) {
+            this.setState({ error: error })
+        }
+        finally { this.setState({ loading: false }); }
     };
 
     onClick(e) {
@@ -19,17 +28,26 @@ export default class HomePage extends Component {
     };
 
     render() {
-        const { movies } = this.state;
+        const { movies, error } = this.state;
         
         return (
             <>
-                <h1 className={styles.title}>Trending today</h1>
-                <ul className={styles.moviesList}>
-                    {movies.map((movie) => (<li key={movie.id} className={styles.item}>
-                        <Link to={{ pathname: `movies/${movie.id}`, state: { from: this.props.location } }}>
-                        {movie.title}</Link></li>))}
-
-            </ul>
+                {error && <h1>Error, try again later</h1>}
+                {this.state.loading &&
+                    <Load
+                        type="ThreeDots"
+                        color="#3f51b5"
+                        height={45}
+                        width={45}
+                        timeout={6000}
+                    />}
+                {movies.length > 0 ? (
+                    <>
+                        <h1 className={styles.title}>Trending today</h1>
+                        <MovieList movies={movies} state={{ from: this.props.location }}></MovieList>
+                    </>
+                    
+                ) : null}
             </>
         )
     };

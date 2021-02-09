@@ -1,15 +1,25 @@
- /*const showTrending = () => {
-    return fetch('https://api.themoviedb.org/3/trending/movie/day?api_key=892c9b9f1c704261a0f515abd746d990').then(res => res.json())
+import Axios from 'axios';
+
+const baseURL = 'https://api.themoviedb.org/3';
+const KEY = '892c9b9f1c704261a0f515abd746d990';
+ 
+const showTrending = () => {
+    return Axios.get(`${baseURL}/trending/movie/day?api_key=${KEY}`)
 };
 
-const fetchShowWithQuery = searchQuery => {
-  return fetch(`https://api.themoviedb.org/3/search/search-movies?api_key=892c9b9f1c704261a0f515abd746d990&query=${searchQuery}`)
-    .then(res => res.json())
-    .then(entries => entries.map(entry => entry.show));
+const showMovieDetails = (movieId) => {
+   return Axios.get(`${baseURL}/movie/${movieId}?api_key=${KEY}`);
+}
+
+const showCast = (movieId) => {
+  return Axios.get(`${baseURL}/movie/${movieId}/credits?api_key=${KEY}`);
+}
+
+const showReviews = (movieId) => {
+  return Axios.get(`${baseURL}/movie/${movieId}/reviews?api_key=${KEY}`);
+}
+const showWithQuery = (query) => {
+  return Axios.get(`${baseURL}/search/movie?api_key=${KEY}&query=${query}`);
 };
 
-const fetchShowDetails = movie_id => {//
-  return fetch(`https://api.themoviedb.org/3/movies/get-movie-details?api_key=892c9b9f1c704261a0f515abd746d990&${movie_id}`).then(res => res.json());
-};
-
-export default { showTrending, fetchShowWithQuery, fetchShowDetails };*/
+export default { showTrending, showMovieDetails, showCast, showReviews, showWithQuery };

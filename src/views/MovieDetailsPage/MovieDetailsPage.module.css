@@ -21,33 +21,8 @@
   font-weight: 600;
 }
 
-.img {
-  display: inline-block;
-  width: 210px;
-  height: auto;
-  margin-right: 15px;
-}
-
-.title {
-  font-size: 20px;
-  margin: 0;
-}
-
 h2 {
   font-size: 15px;
-}
-
-.score {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.overview {
-  font-weight: 800;
-}
-
-.genres {
-  font-weight: 700;
 }
 
 .linkBack {

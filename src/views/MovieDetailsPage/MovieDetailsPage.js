@@ -1,9 +1,11 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { Route, NavLink } from "react-router-dom";
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import Axios from 'axios';
 import routes from "../../routes";
 import styles from './MovieDetailsPage.module.css';
+import API from "../../services/movies-api";
+import Load from "../../components/Loader/Loader";
+import MovieCard from "../../components/MovieCard/MovieCard";
 
 const Cast = lazy(() => import('../Cast/Cast.js' /*webpackChunkName: 'cast' */));
 const Reviews = lazy(() => import('../Reviews/Reviews.js' /*webpackChunkName: 'reviews' */));
@@ -11,28 +13,22 @@ const Reviews = lazy(() => import('../Reviews/Reviews.js' /*webpackChunkName: 'r
 export default class MovieDetailsPage extends Component {
     state = {
         movieId: '',
-        img: '',
-        data: '',
-        title: '',
-        vote_average: '',
-        overview: 0,
-        genres: '',
+        movie: [],
+        error: null,
         loading: false,
     };
-
+    
     async componentDidMount() {
-        const movieId = this.props.match.params.movieId;
-        const response = await Axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=892c9b9f1c704261a0f515abd746d990`);
-        this.setState({img: `https://image.tmdb.org/t/p/w500/${response.data.poster_path}?api_key=892c9b9f1c704261a0f515abd746d990` });
-        this.setState(
-            {
-                data: response.data.release_date.slice(0, 4),
-                title: response.data.title,
-                vote_average: response.data.vote_average * 10,
-                overview: response.data.overview,
-                genres: response.data.genres.map((genre) => (genre.name + " ")),
-            }
-        );
+        try {
+            this.setState({ loading: true });
+            const movieId = this.props.match.params.movieId;
+            const response = await API.showMovieDetails(movieId);
+            this.setState({ movie: response.data });
+        }
+        catch (error) {
+            this.setState({ error: error })
+        }
+        finally {this.setState({ loading: false })}
     };
 
     handleGoBack = () => {
@@ -44,20 +40,23 @@ export default class MovieDetailsPage extends Component {
   };
     
     render() {
-        const { data, title, vote_average, overview, genres, img } = this.state;
+        const { movie, error } = this.state;
         return (
             <>                
+                {error && <h1>Error, try again later</h1>}
+                {this.state.loading &&
+                    <Load
+                        type="ThreeDots"
+                        color="#3f51b5"
+                        height={45}
+                        width={45}
+                        timeout={6000}
+                    />}
                 <button className={styles.linkBack} onClick={this.handleGoBack} ><IoIosArrowRoundBack/>Go back</button>
                 <br />
-                {title && (<>
-                <img className={styles.img} src={img} alt={title}/>
-                <div className={styles.details}>
-                    <h1 className={styles.title}>{title} ({data})</h1>
-                    <div className={styles.score}>User Score: {vote_average}%</div>
-                    <div className={styles.overview}>Overview</div><p>{overview}</p>
-                    <div className={styles.genres}>Genres</div><p>{genres}</p>
-                </div>
-                
+                {movie.title && (<>
+                    <MovieCard movie={movie}></MovieCard>
+                                    
                 <hr />
                 <h2>Additional information</h2>
                 <ul className={styles.detailsMenu}>
@@ -72,7 +71,14 @@ export default class MovieDetailsPage extends Component {
                             activeClassName={styles.detailsLinkActive}>Reviews</NavLink>
                     </li>
                     </ul>
-                    <Suspense fallback={<h1>Загружаем...</h1>}>
+                    <Suspense fallback={this.state.loading &&
+                    <Load
+                        type="ThreeDots"
+                        color="#3f51b5"
+                        height={45}
+                        width={45}
+                        timeout={6000}
+                    />}>
                         <Route path={routes.cast} component={Cast} />
                         <Route path={routes.reviews} component={Reviews} />
                     </Suspense>
@@ -82,3 +88,9 @@ export default class MovieDetailsPage extends Component {
         )
     };
 }
+
+/*<ul className={styles.moviesList}>
+                    {movies.map((movie) => (<li key={movie.id} className={styles.item}>
+                        <Link to={{ pathname: `movies/${movie.id}`, state: { from: this.props.location } }}>
+                        {movie.title}</Link></li>))}
+                        </ul>*/

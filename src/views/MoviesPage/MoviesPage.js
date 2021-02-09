@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
-import styles from './MoviesPage.module.css';
 import SearchBox from "../../components/SearchBox/SearchBox";
-import Axios from 'axios';
 import getQueryParams from "../../utils/getQueryParams";
-import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
+import API from "../../services/movies-api";
+import MovieList from "../../components/MovieList/MovieList";
+import Load from "../../components/Loader/Loader";
 
 export default class MoviesPage extends Component {
     state = {
         searchResult: [],
+        error: null,
+
     };
     
     async componentDidMount() {
-        const { query } = getQueryParams(this.props.location.search);
-        if (query) {
-        const response = await Axios.get(`https://api.themoviedb.org/3/search/movie?api_key=892c9b9f1c704261a0f515abd746d990&query=${query}`);
-        this.setState({ searchResult: response.data.results });}
+        try {
+            this.setState({ loading: true });
+            const { query } = getQueryParams(this.props.location.search);
+            if (query) {
+            const response = await API.showWithQuery(query);
+                this.setState({ searchResult: response.data.results })
+            }
+        }
+        catch (error) {
+            this.setState({ error: error })
+        }
+        finally { this.setState({ loading: false }); }
     };
 
     async componentDidUpdate(prevProps, pervState) {
@@ -25,7 +35,7 @@ export default class MoviesPage extends Component {
         const { query: nextQuery } = getQueryParams(this.props.location.search);
         
         if (prevQuery !== nextQuery) {
-           const response = await Axios.get(`https://api.themoviedb.org/3/search/movie?api_key=892c9b9f1c704261a0f515abd746d990&query=${nextQuery}`);
+           const response = await API.showWithQuery(nextQuery);
             this.setState({ searchResult: response.data.results });
             if (this.state.searchResult.length === 0) {
                 toast.error('Nothing found');
@@ -42,17 +52,23 @@ export default class MoviesPage extends Component {
     };
 
     render() {
-        const { searchResult } = this.state;
+        const { searchResult, error } = this.state;
         return (
             <>
                 <SearchBox onSubmit={this.handleChangeQuery} />
+                
+                {error && <h1>Error, try again later</h1>}
+                {this.state.loading &&
+                    <Load
+                        type="ThreeDots"
+                        color="#3f51b5"
+                        height={45}
+                        width={45}
+                        timeout={6000}
+                    />}
                 {searchResult.length > 0 ?
-                    <ul className={styles.moviesList}>
-                        {searchResult.map((result) => (<li key={result.id} className={styles.item}>
-                            <Link to={{pathname: `movies/${result.id}`, state: {from: this.props.location}}}>
-                                {result.title}</Link></li>))}
-
-                    </ul> : null }
+                     <MovieList movies={searchResult} state={{ from: this.props.location }}></MovieList>
+                    : null}
                 
         <ToastContainer autoClose={2000}/>
             </>    
