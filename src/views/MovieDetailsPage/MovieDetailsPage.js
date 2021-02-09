@@ -32,11 +32,9 @@ export default class MovieDetailsPage extends Component {
     };
 
     handleGoBack = () => {
-        const { state } = this.props.location;
-        if (state && state.from) {
-        return this.props.history.push(state.from);
-    } 
-    this.props.history.push(routes.shows);
+        const { location, history } = this.props;
+                
+        history.push(location?.state?.from || routes.home);
   };
     
     render() {

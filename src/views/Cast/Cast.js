@@ -44,6 +44,7 @@ export default class Cast extends Component {
                         ))}
                     </ul>
                 )}
+                {credits.length === 0 && <p>We don't have any information about actors of this movie</p>}
             </>
         )
     };
